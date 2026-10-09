@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wonderdraw — 1 000 Topic Lottery & 60s Challenge</title>
+  <meta name="description" content="Tirez au sort parmi 1 000 sujets répertoriés, affûtez votre angle et préparez votre explication en 1 minute.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%238B5CF6%22 stroke-width=%222%22><rect x=%222%22 y=%222%22 width=%2220%22 height=%2220%22 rx=%225%22/><circle cx=%228%22 cy=%228%22 r=%221.5%22 fill=%22%238B5CF6%22/><circle cx=%2216%22 cy=%2216%22 r=%221.5%22 fill=%22%238B5CF6%22/><circle cx=%2212%22 cy=%2212%22 r=%221.5%22 fill=%22%238B5CF6%22/></svg>">
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <!-- Ambient Background Mesh -->
+  <div class="ambient-glow-container">
+    <div class="ambient-glow-orb ambient-orb-1"></div>
+    <div class="ambient-glow-orb ambient-orb-2"></div>
+    <div class="ambient-glow-orb ambient-orb-3"></div>
+  </div>
+
+  <div id="app">
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="brand-section" id="brandHomeBtn">
+        <div class="brand-logo-gem" id="brandLogoContainer"></div>
+        <div class="brand-title-group">
+          <h1>Wonderdraw</h1>
+          <div class="brand-tagline" id="brandTagline">1 000 Sujets • Tirage Loterie & Défi 1-Min</div>
+        </div>
+      </div>
+
+      <!-- Main Navigation Tabs -->
+      <nav class="nav-pills">
+        <button class="nav-pill-btn active" data-tab="draw" id="tabBtnDraw">
+          <span class="nav-icon" id="iconTabDraw"></span>
+          <span id="labelTabDraw">Tirage Loterie</span>
+        </button>
+        <button class="nav-pill-btn" data-tab="studio" id="tabBtnStudio">
+          <span class="nav-icon" id="iconTabStudio"></span>
+          <span id="labelTabStudio">Chronos (10m / 1m)</span>
+        </button>
+        <button class="nav-pill-btn" data-tab="stats" id="tabBtnStats">
+          <span class="nav-icon" id="iconTabStats"></span>
+          <span id="labelTabStats">Progression</span>
+        </button>
+      </nav>
+
+      <!-- Utility Actions -->
+      <div class="header-actions">
+        <div class="deck-counter-badge" id="headerDeckBadge" title="Sujets disponibles dans la pioche">
+          <span id="deckBadgeIcon"></span>
+          <span id="headerDeckCount">1000/1000</span>
+        </div>
+
+        <!-- Language Switcher (EN / FR) -->
+        <button class="action-icon-btn" id="langToggleBtn" title="Changer de langue / Switch language" style="width:auto; padding:0 0.65rem; font-family:var(--font-sans); font-size:0.78rem; font-weight:700; letter-spacing:0.04em;">
+          <span id="langBtnLabel">EN</span>
+        </button>
+
+        <button class="action-icon-btn" id="audioToggleBtn" title="Activer / Couper les effets sonores (M)"></button>
+
+        <button class="action-icon-btn" id="themeToggleBtn" title="Basculer thème sombre / clair"></button>
+
+        <button class="action-icon-btn" id="shortcutsBtn" title="Raccourcis clavier (?)"></button>
+      </div>
+    </header>
+
+    <!-- Active Views -->
+    <main>
+      <section id="drawView" class="tab-view active"></section>
+      <section id="studioView" class="tab-view"></section>
+      <section id="statsView" class="tab-view"></section>
+    </main>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div class="modal-backdrop" id="shortcutsModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="shortcutsTitle">Raccourcis Clavier</h3>
+        <button class="modal-close-btn" id="closeShortcutsBtn"></button>
+      </div>
+      <table class="shortcuts-table">
+        <tbody id="shortcutsTableBody">
+          <tr>
+            <td id="scDescDraw">Tirer un sujet / Carte suivante</td>
+            <td><kbd>Espace</kbd> ou <kbd>Entrée</kbd></td>
+          </tr>
+          <tr>
+            <td id="scDescStudio">Ouvrir les Chronomètres (10m / 1m)</td>
+            <td><kbd>T</kbd></td>
+          </tr>
+          <tr>
+            <td id="scDescFav">Ajouter / Retirer des favoris</td>
+            <td><kbd>F</kbd></td>
+          </tr>
+          <tr>
+            <td id="scDescMute">Couper / Activer les effets sonores</td>
+            <td><kbd>M</kbd></td>
+          </tr>
+          <tr>
+            <td id="scDescClose">Fermer une fenêtre modale</td>
+            <td><kbd>Échap</kbd></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Themes Filter Modal -->
+  <div class="modal-backdrop" id="themeModal">
+    <div class="modal-card" style="max-width: 560px; max-height: 85vh; display: flex; flex-direction: column;">
+      <div class="modal-header">
+        <div>
+          <h3 id="themeModalTitle">Filtrer par Thème</h3>
+          <p id="themeModalSub" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+            Choisissez une catégorie spécifique pour le tirage ou sélectionnez tous les thèmes.
+          </p>
+        </div>
+        <button class="modal-close-btn" id="closeThemeModalBtn"></button>
+      </div>
+      <div class="theme-options-list" id="themeOptionsContainer">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
