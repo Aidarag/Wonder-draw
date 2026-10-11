@@ -140,7 +140,7 @@ export class ChallengeStudio {
           <!-- Chrono 1: 10-Minute Research Timer -->
           <div id="chronoStageResearch" style="width:100%; display:flex; flex-direction:column; align-items:center; gap:1.25rem;">
             <div style="text-align:center;">
-              <h3 style="font-family:var(--font-display); font-size:1.1rem; font-weight:700;" id="researchHeadLabel">${i18n.t('researchHeading')}</h3>
+              <h3 style="font-family:var(--font-display); font-size:1.3rem; font-weight:400; text-transform:uppercase; letter-spacing:-0.02em; line-height:1;" id="researchHeadLabel">${i18n.t('researchHeading')}</h3>
               <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;" id="researchSubLabel">
                 ${i18n.t('researchSub')}
               </p>
@@ -153,7 +153,7 @@ export class ChallengeStudio {
                 <circle class="timer-circle-progress" id="researchProgressCircle" cx="85" cy="85" r="70"></circle>
               </svg>
               <div class="timer-digits-center">
-                <span class="timer-number" id="researchTimeDisplay" style="font-size:1.85rem;">10:00</span>
+                <span class="timer-number" id="researchTimeDisplay" style="font-size:2.8rem; line-height: 0.88;">10:00</span>
                 <span class="timer-unit-label" id="researchUnitText">${i18n.t('researchUnitLabel')}</span>
               </div>
             </div>
@@ -180,7 +180,7 @@ export class ChallengeStudio {
           <!-- Chrono 2: 60-Second Video Pitch Timer -->
           <div id="chronoStageVideo" style="width:100%; display:none; flex-direction:column; align-items:center; gap:1.25rem;">
             <div style="text-align:center;">
-              <h3 style="font-family:var(--font-display); font-size:1.1rem; font-weight:700;" id="videoHeadLabel">${i18n.t('videoHeading')}</h3>
+              <h3 style="font-family:var(--font-display); font-size:1.3rem; font-weight:400; text-transform:uppercase; letter-spacing:-0.02em; line-height:1;" id="videoHeadLabel">${i18n.t('videoHeading')}</h3>
               <p style="font-size:0.8rem; color:var(--text-muted); margin-top:0.2rem;" id="videoSubLabel">
                 ${i18n.t('videoSub')}
               </p>
@@ -419,6 +419,17 @@ export class ChallengeStudio {
     catBadge.style.background = this.topic.colors.gradient;
     topicId.textContent = `#${this.topic.id} (${this.topic.topicNumber}/100)`;
     title.textContent = this.topic.title;
+
+    // Apply length-based responsive sizing class for Anton uppercase title
+    title.classList.remove('title-medium', 'title-long', 'title-xlarge');
+    if (this.topic.title.length > 40) {
+      title.classList.add('title-long');
+    } else if (this.topic.title.length > 22) {
+      title.classList.add('title-medium');
+    } else {
+      title.classList.add('title-xlarge');
+    }
+
     ruleText.textContent = localizedGuidance;
     card.style.borderColor = `${this.topic.colors.primary}55`;
 

@@ -420,6 +420,17 @@ export class DrawStudio {
     badge.style.background = topic.colors.gradient;
     topicId.textContent = `#${topic.id} (${topic.topicNumber}/100)`;
     title.textContent = topic.title;
+
+    // Apply length-based responsive sizing class for Anton uppercase title
+    title.classList.remove('title-medium', 'title-long', 'title-xlarge');
+    if (topic.title.length > 40) {
+      title.classList.add('title-long');
+    } else if (topic.title.length > 22) {
+      title.classList.add('title-medium');
+    } else {
+      title.classList.add('title-xlarge');
+    }
+
     guidanceText.textContent = localizedGuidance;
     searchLink.href = `https://www.google.com/search?q=${encodeURIComponent(topic.title)}`;
 
