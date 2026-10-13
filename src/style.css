@@ -85,11 +85,17 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-app);
   color: var(--text-primary);
   min-height: 100vh;
+  min-height: 100dvh;
   line-height: 1.5;
   overflow-x: hidden;
 }
@@ -99,6 +105,13 @@ input,
 select,
 textarea {
   font-family: var(--font-sans);
+  font-size: 16px;
+}
+
+button, a, [role="button"] {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* Ambient Ambient Glow Mesh in Background */
@@ -455,8 +468,10 @@ textarea {
   border-radius: var(--radius-xl);
   position: relative;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: transform 600ms var(--ease-spring), box-shadow 300ms var(--ease-smooth);
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .interactive-3d-card.is-shuffling {
@@ -476,12 +491,21 @@ textarea {
   border-radius: var(--radius-xl);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   display: flex;
   flex-direction: column;
   padding: 2.2rem;
   background: #FFFFFF;
   border: 1px solid var(--border-medium);
   box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+/* Safari WebKit fix: force all child layers to respect backface hiding */
+.card-face * {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* Card Front (Unflipped / Deck Cover) */
@@ -492,6 +516,8 @@ textarea {
   text-align: center;
   overflow: hidden;
   border: 1px solid var(--border-medium);
+  transform: rotateY(0deg) translateZ(1px);
+  -webkit-transform: rotateY(0deg) translateZ(1px);
 }
 
 .card-front-pattern {
@@ -500,6 +526,7 @@ textarea {
   background-image: radial-gradient(rgba(54, 112, 255, 0.22) 1px, transparent 1px);
   background-size: 20px 20px;
   opacity: 0.6;
+  pointer-events: none;
 }
 
 .card-front-orb {
@@ -516,7 +543,11 @@ textarea {
   margin-bottom: 1.5rem;
   animation: pulseGlow 4s ease-in-out infinite alternate;
   position: relative;
-  z-index: 1;
+}
+
+/* Stop orb animation when card is flipped so WebKit doesn't keep a rogue compositor layer */
+.interactive-3d-card.flipped .card-front-orb {
+  animation: none;
 }
 
 @keyframes pulseGlow {
@@ -534,7 +565,6 @@ textarea {
   color: var(--text-primary);
   margin-bottom: 0.75rem;
   position: relative;
-  z-index: 1;
 }
 
 .card-front p {
@@ -542,7 +572,6 @@ textarea {
   font-size: 0.95rem;
   max-width: 340px;
   position: relative;
-  z-index: 1;
 }
 
 .card-front-hint {
@@ -561,13 +590,34 @@ textarea {
 /* Card Back (Flipped Reveal) */
 .card-back {
   background: #FFFFFF;
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
+  -webkit-transform: rotateY(180deg) translateZ(1px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   border: 1px solid var(--border-glow);
   box-shadow: var(--shadow-glow), var(--shadow-lg);
   overflow: hidden;
+}
+
+/* Hard isolation for Safari / WebKit:
+   Completely isolate hidden faces so WebKit compositor cannot paint ghost layers */
+.interactive-3d-card.flipped:not(.is-shuffling) .card-front {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.interactive-3d-card:not(.flipped):not(.is-shuffling) .card-back {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.interactive-3d-card.is-shuffling .card-front,
+.interactive-3d-card.is-shuffling .card-back {
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 .card-back-header {
@@ -1933,13 +1983,7 @@ kbd {
 /* Responsive Breakpoints */
 @media (max-width: 900px) {
   #app {
-    padding: 0.75rem 1rem 3rem;
-  }
-  
-  .app-header {
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    padding: 0.85rem 1rem;
+    padding: 0.75rem 1rem 3.5rem;
   }
   
   .studio-layout {
@@ -1955,90 +1999,355 @@ kbd {
   }
 }
 
-@media (max-width: 640px) {
-  .brand-title-group h1 {
+/* Mobile Devices (iPhone & Android Phones) */
+@media (max-width: 680px) {
+  /* App container with safe-area spacing */
+  #app {
+    padding: calc(0.35rem + env(safe-area-inset-top, 0px)) 0.75rem calc(2.5rem + env(safe-area-inset-bottom, 0px));
+    min-height: 100dvh;
+  }
+
+  /* Mobile Header: 2 Clean Rows (Row 1: Brand & Actions, Row 2: Full-width Segmented Nav) */
+  .app-header {
+    position: sticky;
+    top: calc(0.25rem + env(safe-area-inset-top, 0px));
+    margin-bottom: 1.15rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.65rem;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .brand-section {
+    order: 1;
+    gap: 0.5rem;
+  }
+
+  .brand-logo-gem {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .brand-title,
+  .brand-section h1 {
     font-size: 1.35rem;
   }
-  
-  .nav-pill-btn span {
-    display: none;
+
+  .header-actions {
+    order: 2;
+    gap: 0.35rem;
   }
-  
+
+  .deck-counter-badge {
+    padding: 0.3rem 0.55rem;
+    font-size: 0.72rem;
+  }
+
+  .action-icon-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Navigation Pills: Full width Row 2 */
+  .nav-pills {
+    order: 3;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    background: var(--color-bright-gray);
+    padding: 0.25rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-subtle);
+    gap: 0.25rem;
+  }
+
   .nav-pill-btn {
-    padding: 0.5rem 0.75rem;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.35rem;
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 600;
+    touch-action: manipulation;
+  }
+
+  .nav-pill-btn .nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .nav-pill-btn .nav-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .nav-pill-btn span:not(.nav-icon) {
+    display: inline !important;
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+
+  .nav-pill-btn.active {
+    background: #FFFFFF;
+    color: var(--color-ultramarine);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Draw Studio View & 3D Card */
+  .draw-studio-layout {
+    gap: 1.15rem;
+    width: 100%;
   }
 
   .card-stage-container {
-    min-height: 520px;
+    min-height: auto;
+    height: auto;
+    width: 100%;
+    margin: 0 auto;
+    perspective: 1000px;
   }
 
   .interactive-3d-card {
-    min-height: 520px;
+    min-height: 400px;
+    border-radius: var(--radius-lg);
   }
 
   .card-face {
-    padding: 1.4rem 1.15rem;
+    padding: 1.15rem 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .card-front {
+    padding: 1.5rem 1rem;
+  }
+
+  .card-front-orb {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 0.85rem;
+  }
+
+  .card-front-orb svg {
+    width: 36px;
+    height: 36px;
   }
 
   .card-front h2 {
-    font-size: 2.2rem;
-    line-height: 0.92;
+    font-size: clamp(1.8rem, 6.5vw, 2.2rem);
+    margin-bottom: 0.4rem;
+  }
+
+  .card-front p {
+    font-size: 0.84rem;
+    max-width: 270px;
+  }
+
+  .card-back-header {
+    gap: 0.5rem;
+  }
+
+  .topic-category-badge {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.74rem;
+  }
+
+  .topic-id-pill {
+    font-size: 0.76rem;
+  }
+
+  .card-back-body {
+    margin: 0.75rem 0;
+  }
+
+  .topic-reveal-title {
+    margin-bottom: 0.65rem;
   }
 
   .topic-reveal-title.title-xlarge,
   .studio-topic-title.title-xlarge {
-    font-size: clamp(2.0rem, 7.5vw, 2.6rem);
-    line-height: 0.91;
+    font-size: clamp(1.75rem, 6.5vw, 2.2rem);
+    line-height: 0.92;
   }
 
   .topic-reveal-title.title-medium,
   .studio-topic-title.title-medium {
-    font-size: clamp(1.6rem, 5.8vw, 2.0rem);
-    line-height: 0.93;
+    font-size: clamp(1.4rem, 5.0vw, 1.75rem);
+    line-height: 0.94;
   }
 
   .topic-reveal-title.title-long,
   .studio-topic-title.title-long {
-    font-size: clamp(1.22rem, 4.4vw, 1.55rem);
+    font-size: clamp(1.1rem, 3.8vw, 1.35rem);
     line-height: 0.96;
   }
 
+  .topic-guidance-callout {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    gap: 0.5rem;
+  }
+
   .card-back-footer {
+    padding-top: 0.75rem;
+    gap: 0.6rem;
     flex-direction: column;
-    gap: 0.75rem;
     align-items: stretch;
-    padding-top: 1rem;
   }
 
   .card-back-actions {
     display: flex;
-    justify-content: space-between;
+    gap: 0.35rem;
     width: 100%;
-    gap: 0.4rem;
   }
 
   .card-back-actions .card-btn {
     flex: 1;
     justify-content: center;
-    padding: 0.55rem 0.4rem;
-    font-size: 0.78rem;
+    padding: 0.5rem 0.25rem;
+    font-size: 0.74rem;
+    gap: 0.25rem;
+  }
+
+  .card-back-actions .card-btn svg {
+    width: 14px;
+    height: 14px;
   }
 
   .primary-enter-studio-btn {
     width: 100%;
     justify-content: center;
-    padding: 0.8rem 1.25rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.86rem;
   }
 
-  .studio-topic-title {
-    font-size: 1.7rem;
+  /* Global Draw Controls */
+  .draw-controls-bar {
+    width: 100%;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  .big-draw-button {
+    width: 100%;
+    max-width: 320px;
+    padding: 0.9rem 1.5rem;
+    font-size: 1.05rem;
+  }
+
+  .draw-options-row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem 0.75rem;
+    font-size: 0.76rem;
+    width: 100%;
+    text-align: center;
+    padding: 0 0.25rem;
+  }
+
+  /* 2. Challenge Studio Responsive Layout */
+  .studio-layout {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
   }
 
   .studio-topic-card {
-    padding: 1.25rem 1.1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.15rem 1rem;
+    gap: 0.75rem;
   }
 
+  .studio-topic-left {
+    width: 100%;
+  }
+
+  .studio-topic-actions {
+    width: 100%;
+  }
+
+  .studio-topic-actions .card-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pitch-framework-panel,
+  .recorder-panel {
+    padding: 1.15rem 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .teleprompter-textarea {
+    font-size: 16px; /* Prevents auto-zoom in iOS Safari */
+    height: 120px;
+  }
+
+  .recorder-actions-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.55rem;
+  }
+
+  .record-main-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 3. Analytics & Progress Responsive Layout */
   .analytics-dashboard-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+  }
+
+  .metric-card {
+    padding: 0.85rem 0.75rem;
+  }
+
+  .metric-card-number {
+    font-size: 1.6rem;
+  }
+
+  .category-breakdown-section {
+    padding: 1.15rem 1rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .cat-breakdown-labels {
+    font-size: 0.76rem;
+  }
+
+  /* 4. Theme Filter Modal Mobile Optimization */
+  .modal-backdrop {
+    padding: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .modal-card {
+    padding: 1.25rem 1rem;
+    max-height: 85vh;
+    border-radius: var(--radius-xl) var(--radius-xl) var(--radius-md) var(--radius-md);
+  }
+
+  .theme-options-list {
+    max-height: 55vh;
+  }
+
+  .theme-option-card {
+    padding: 0.75rem 0.85rem;
+    font-size: 0.82rem;
   }
 }
