@@ -58,13 +58,11 @@ class WonderdrawApp {
       langToggleBtn.title = i18n.t('switchLang');
     }
 
-    // Header Tagline & Nav Tabs
-    const tagline = document.getElementById('brandTagline');
+    // Header Nav Tabs
     const labelDraw = document.getElementById('labelTabDraw');
     const labelStudio = document.getElementById('labelTabStudio');
     const labelStats = document.getElementById('labelTabStats');
 
-    if (tagline) tagline.textContent = i18n.t('appTagline');
     if (labelDraw) labelDraw.textContent = i18n.t('tabDraw');
     if (labelStudio) labelStudio.textContent = i18n.t('tabStudio');
     if (labelStats) labelStats.textContent = i18n.t('tabStats');

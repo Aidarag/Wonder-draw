@@ -4,9 +4,8 @@ export const translations = {
   fr: {
     // Header & Meta
     appTitle: "Wonderdraw",
-    appTagline: "1 000 Sujets • Tirage Loterie & Défi 1-Min",
-    tabDraw: "Tirage Loterie",
-    tabStudio: "Chronos (10m / 1m)",
+    tabDraw: "Tirage",
+    tabStudio: "Chronos",
     tabStats: "Progression",
     deckBadgeTitle: "Sujets disponibles dans la pioche",
     toggleAudio: "Activer / Couper les effets sonores",
@@ -123,9 +122,8 @@ export const translations = {
   en: {
     // Header & Meta
     appTitle: "Wonderdraw",
-    appTagline: "1,000 Subjects • Topic Lottery & 1-Min Challenge",
-    tabDraw: "Lottery Draw",
-    tabStudio: "Timers (10m / 1m)",
+    tabDraw: "Draw",
+    tabStudio: "Timers",
     tabStats: "Progress",
     deckBadgeTitle: "Subjects available in deck",
     toggleAudio: "Toggle sound effects",
