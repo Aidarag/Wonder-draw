@@ -90,7 +90,7 @@ export class ChallengeStudio {
 
           <!-- Pitch Structure Outline (Step 2 Focus) -->
           <div class="pitch-steps-guide">
-            <div class="pitch-step-item" style="border-left-color: #8B5CF6;">
+            <div class="pitch-step-item" style="border-left-color: #3670FF;">
               <div class="pitch-step-time" id="step1TimeLabel">${i18n.t('step1Time')}</div>
               <div class="pitch-step-content">
                 <strong id="step1TitleLabel">${i18n.t('step1Title')}</strong>

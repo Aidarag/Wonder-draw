@@ -18,7 +18,7 @@ export function fireConfetti(options = {}) {
   canvas.height = height * dpr;
   ctx.scale(dpr, dpr);
 
-  const colors = options.colors || ['#8B5CF6', '#3B82F6', '#10B981', '#F59E0B', '#EC4899', '#06B6D4', '#F97316'];
+  const colors = options.colors || ['#3670FF', '#2358EB', '#6BA0FF', '#EFEFEF', '#FFFFFF', '#93C5FD', '#0A1428'];
   const count = options.count || 70;
   const origin = options.origin || { x: width / 2, y: height * 0.45 };
 

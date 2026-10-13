@@ -332,7 +332,7 @@ export class DrawStudio {
     let html = `
       <button class="theme-option-card ${selected === 'all' ? 'selected' : ''}" data-category="all">
         <div class="theme-option-left">
-          <div class="theme-color-dot" style="background: var(--gradient-brand); color: #8B5CF6;"></div>
+          <div class="theme-color-dot" style="background: var(--gradient-brand); color: #3670FF;"></div>
           <div class="theme-option-title">${i18n.t('themeAllOption')}</div>
         </div>
         <div class="theme-option-check">${icons.check}</div>

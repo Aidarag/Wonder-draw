@@ -14,7 +14,7 @@ class WonderdrawApp {
     this.initViews();
     this.bindGlobalEvents();
     this.updateHeaderBadges();
-    this.syncThemeAndAudio();
+    this.syncAudio();
     this.updateLocalizedUI();
 
     // Subscribe to language change
@@ -79,12 +79,10 @@ class WonderdrawApp {
     // Tooltips
     const deckBadge = document.getElementById('headerDeckBadge');
     const audioBtn = document.getElementById('audioToggleBtn');
-    const themeBtn = document.getElementById('themeToggleBtn');
     const shortcutsBtn = document.getElementById('shortcutsBtn');
 
     if (deckBadge) deckBadge.title = i18n.t('deckBadgeTitle');
     if (audioBtn) audioBtn.title = i18n.t('toggleAudio');
-    if (themeBtn) themeBtn.title = i18n.t('toggleTheme');
     if (shortcutsBtn) shortcutsBtn.title = i18n.t('shortcuts');
 
     // Shortcuts Modal Table
@@ -185,15 +183,7 @@ class WonderdrawApp {
     }
   }
 
-  syncThemeAndAudio() {
-    // Theme
-    document.documentElement.setAttribute('data-theme', appState.state.theme);
-    const themeBtn = document.getElementById('themeToggleBtn');
-    if (themeBtn) {
-      themeBtn.innerHTML = appState.state.theme === 'dark' ? icons.moon : icons.sun;
-    }
-
-    // Audio
+  syncAudio() {
     const audioBtn = document.getElementById('audioToggleBtn');
     if (audioBtn) {
       audioBtn.innerHTML = sound.isMuted() ? icons.soundOff : icons.soundOn;
@@ -222,16 +212,6 @@ class WonderdrawApp {
       langBtn.addEventListener('click', () => {
         sound.playClick();
         i18n.toggleLang();
-      });
-    }
-
-    // Theme toggle
-    const themeBtn = document.getElementById('themeToggleBtn');
-    if (themeBtn) {
-      themeBtn.addEventListener('click', () => {
-        const next = appState.toggleTheme();
-        themeBtn.innerHTML = next === 'dark' ? icons.moon : icons.sun;
-        sound.playClick();
       });
     }
 

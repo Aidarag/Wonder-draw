@@ -37,7 +37,7 @@
 ## 🎨 Design & Craft Sensibility
 
 - **Zero Emojis :** Clean, minimalist 24x24 SVG vector icon system (*Linear / Apple / Vercel style*).
-- **Dark & Light Themes :** Deep galactic obsidian and crisp porcelain themes.
+- **Ultramarine Blue & Bright Gray Palette :** Signature Ultramarine blue (`#3670FF`) primary palette paired with Bright Gray (`#EFEFEF`) typography and crisp high-contrast surfaces.
 - **Web Audio API Synthesizer :** Procedural sounds without external audio assets.
 
 ---

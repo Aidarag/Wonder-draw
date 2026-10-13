@@ -10,7 +10,6 @@ export const translations = {
     tabStats: "Progression",
     deckBadgeTitle: "Sujets disponibles dans la pioche",
     toggleAudio: "Activer / Couper les effets sonores (M)",
-    toggleTheme: "Basculer thème sombre / clair",
     shortcuts: "Raccourcis clavier (?)",
     switchLang: "Passer en Anglais (Switch to English)",
 
@@ -139,7 +138,6 @@ export const translations = {
     tabStats: "Progress",
     deckBadgeTitle: "Subjects available in deck",
     toggleAudio: "Toggle sound effects (M)",
-    toggleTheme: "Toggle dark / light theme",
     shortcuts: "Keyboard shortcuts (?)",
     switchLang: "Passer en Français (Switch to French)",
 

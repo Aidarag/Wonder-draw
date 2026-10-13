@@ -20,7 +20,6 @@ class StateManager {
           selectedCategory: parsed.selectedCategory || 'all',
           excludeDrawn: parsed.excludeDrawn !== undefined ? parsed.excludeDrawn : true,
           drawMode: parsed.drawMode || 'single',
-          theme: parsed.theme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'),
           activeTopicId: parsed.activeTopicId || null,
           researchDone: parsed.researchDone || {}
         };
@@ -38,7 +37,6 @@ class StateManager {
       selectedCategory: 'all',
       excludeDrawn: true,
       drawMode: 'single',
-      theme: window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark',
       activeTopicId: null,
       researchDone: {}
     };
@@ -55,7 +53,6 @@ class StateManager {
         selectedCategory: this.state.selectedCategory,
         excludeDrawn: this.state.excludeDrawn,
         drawMode: this.state.drawMode,
-        theme: this.state.theme,
         activeTopicId: this.state.activeTopicId,
         researchDone: this.state.researchDone || {}
       };
@@ -159,18 +156,6 @@ class StateManager {
   setExcludeDrawn(val) {
     this.state.excludeDrawn = !!val;
     this.saveState();
-  }
-
-  setTheme(theme) {
-    this.state.theme = theme;
-    document.documentElement.setAttribute('data-theme', theme);
-    this.saveState();
-  }
-
-  toggleTheme() {
-    const nextTheme = this.state.theme === 'dark' ? 'light' : 'dark';
-    this.setTheme(nextTheme);
-    return nextTheme;
   }
 
   resetDeck() {
