@@ -107,7 +107,6 @@ export class DrawStudio {
           <button class="big-draw-button" id="primaryDrawBtn">
             <span class="draw-btn-icon">${icons.draw}</span>
             <span id="primaryDrawBtnLabel">${i18n.t('btnDraw')}</span>
-            <span class="draw-btn-kbd">Espace</span>
           </button>
 
           <div class="draw-options-row">
