@@ -9,14 +9,12 @@ export const translations = {
     tabStudio: "Chronos (10m / 1m)",
     tabStats: "Progression",
     deckBadgeTitle: "Sujets disponibles dans la pioche",
-    toggleAudio: "Activer / Couper les effets sonores (M)",
-    shortcuts: "Raccourcis clavier (?)",
+    toggleAudio: "Activer / Couper les effets sonores",
     switchLang: "Passer en Anglais (Switch to English)",
 
     // Draw Studio
     deckCoverTitle: "Wonderdraw Lottery",
     deckCoverDesc: "Piochez un sujet parmi les 1 000 thèmes répertoriés.",
-    deckCoverHint: "Cliquez sur \"Tirer un sujet\" ou",
     btnDraw: "Tirer un Sujet",
     btnDrawing: "Tirage en cours...",
     optExcludeDrawn: "Exclure les sujets déjà tirés",
@@ -93,14 +91,6 @@ export const translations = {
     categoryProgressHeading: "Progression par Catégorie (100 sujets chacune)",
     categoryProgressStatus: "traités • {drawn} tirés / 100",
 
-    // Shortcuts Modal
-    shortcutsModalTitle: "Raccourcis Clavier",
-    shortcutDraw: "Tirer un sujet / Carte suivante",
-    shortcutStudio: "Ouvrir les Chronomètres (10m / 60s)",
-    shortcutFav: "Ajouter / Retirer des favoris",
-    shortcutMute: "Couper / Activer les effets sonores",
-    shortcutClose: "Fermer une fenêtre modale",
-
     // Category names in French
     categories: {
       'psychology-and-human-behavior': "Psychologie et comportement humain",
@@ -138,14 +128,12 @@ export const translations = {
     tabStudio: "Timers (10m / 1m)",
     tabStats: "Progress",
     deckBadgeTitle: "Subjects available in deck",
-    toggleAudio: "Toggle sound effects (M)",
-    shortcuts: "Keyboard shortcuts (?)",
+    toggleAudio: "Toggle sound effects",
     switchLang: "Passer en Français (Switch to French)",
 
     // Draw Studio
     deckCoverTitle: "Wonderdraw Lottery",
     deckCoverDesc: "Draw a subject from 1,000 curated topics.",
-    deckCoverHint: "Click \"Draw a Subject\" or press",
     btnDraw: "Draw a Subject",
     btnDrawing: "Drawing Subject...",
     optExcludeDrawn: "Exclude previously drawn subjects",
@@ -221,14 +209,6 @@ export const translations = {
     metricRemainingSub: "Topics available to draw",
     categoryProgressHeading: "Progress by Category (100 subjects each)",
     categoryProgressStatus: "completed • {drawn} drawn / 100",
-
-    // Shortcuts Modal
-    shortcutsModalTitle: "Keyboard Shortcuts",
-    shortcutDraw: "Draw a subject / Next card",
-    shortcutStudio: "Open Timers (10m / 60s)",
-    shortcutFav: "Add / Remove favorite",
-    shortcutMute: "Mute / Unmute sound effects",
-    shortcutClose: "Close active modal",
 
     // Category names in English
     categories: {

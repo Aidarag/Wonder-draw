@@ -41,13 +41,6 @@ class WonderdrawApp {
     const deckIcon = document.getElementById('deckBadgeIcon');
     if (deckIcon) deckIcon.innerHTML = icons.cards;
 
-    // Shortcuts icon & close
-    const shortcutsBtn = document.getElementById('shortcutsBtn');
-    if (shortcutsBtn) shortcutsBtn.innerHTML = icons.keyboard;
-
-    const closeShortcutsBtn = document.getElementById('closeShortcutsBtn');
-    if (closeShortcutsBtn) closeShortcutsBtn.innerHTML = icons.close;
-
     const closeThemeBtn = document.getElementById('closeThemeModalBtn');
     if (closeThemeBtn) closeThemeBtn.innerHTML = icons.close;
   }
@@ -79,26 +72,9 @@ class WonderdrawApp {
     // Tooltips
     const deckBadge = document.getElementById('headerDeckBadge');
     const audioBtn = document.getElementById('audioToggleBtn');
-    const shortcutsBtn = document.getElementById('shortcutsBtn');
 
     if (deckBadge) deckBadge.title = i18n.t('deckBadgeTitle');
     if (audioBtn) audioBtn.title = i18n.t('toggleAudio');
-    if (shortcutsBtn) shortcutsBtn.title = i18n.t('shortcuts');
-
-    // Shortcuts Modal Table
-    const scTitle = document.getElementById('shortcutsTitle');
-    const scDraw = document.getElementById('scDescDraw');
-    const scStudio = document.getElementById('scDescStudio');
-    const scFav = document.getElementById('scDescFav');
-    const scMute = document.getElementById('scDescMute');
-    const scClose = document.getElementById('scDescClose');
-
-    if (scTitle) scTitle.textContent = i18n.t('shortcutsModalTitle');
-    if (scDraw) scDraw.textContent = i18n.t('shortcutDraw');
-    if (scStudio) scStudio.textContent = i18n.t('shortcutStudio');
-    if (scFav) scFav.textContent = i18n.t('shortcutFav');
-    if (scMute) scMute.textContent = i18n.t('shortcutMute');
-    if (scClose) scClose.textContent = i18n.t('shortcutClose');
 
     // Theme Modal Text
     const themeModalTitle = document.getElementById('themeModalTitle');
@@ -225,67 +201,10 @@ class WonderdrawApp {
       });
     }
 
-    // Shortcuts modal
-    const shortcutsBtn = document.getElementById('shortcutsBtn');
-    const modal = document.getElementById('shortcutsModal');
-    const closeModalBtn = document.getElementById('closeShortcutsBtn');
-
-    if (shortcutsBtn && modal) {
-      shortcutsBtn.addEventListener('click', () => {
-        sound.playClick();
-        modal.classList.add('open');
-      });
-    }
-
-    if (closeModalBtn && modal) {
-      closeModalBtn.addEventListener('click', () => {
-        modal.classList.remove('open');
-      });
-    }
-
-    if (modal) {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.classList.remove('open');
-      });
-    }
-
-    // Keyboard Shortcuts (Space, Enter, T, F, C, M, Escape)
+    // Close modal on Escape
     window.addEventListener('keydown', (e) => {
-      const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-      const isInput = activeTag === 'input' || activeTag === 'textarea';
-
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
-        return;
-      }
-
-      if (isInput) return;
-
-      if (e.key === ' ' || e.key === 'Enter') {
-        if (this.activeTab === 'draw') {
-          e.preventDefault();
-          this.drawStudio.handleDraw();
-        }
-      } else if (e.key.toLowerCase() === 't') {
-        e.preventDefault();
-        this.switchTab('studio');
-      } else if (e.key.toLowerCase() === 'f') {
-        if (this.drawStudio.currentTopic) {
-          e.preventDefault();
-          sound.playClick();
-          const isFav = appState.toggleFavorite(this.drawStudio.currentTopic.id);
-          this.drawStudio.updateFavButtonState(isFav);
-          this.challengeStudio.updateFavButton(isFav);
-        }
-      } else if (e.key.toLowerCase() === 'm') {
-        e.preventDefault();
-        const isMuted = sound.toggleMute();
-        if (audioBtn) audioBtn.innerHTML = isMuted ? icons.soundOff : icons.soundOn;
-        if (!isMuted) sound.playClick();
-      } else if (e.key === '?') {
-        e.preventDefault();
-        sound.playClick();
-        if (modal) modal.classList.toggle('open');
       }
     });
 

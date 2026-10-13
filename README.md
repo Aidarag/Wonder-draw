@@ -12,7 +12,7 @@
 - Full localization of all UI controls, guidance rules, pitch framework, and category descriptions with persistent preference in `localStorage`.
 
 ### 2. Lottery Draw (Wonderdraw Lottery)
-- **Single 3D Tactile Card :** Instant random draw across all 1,000 subjects (by click or pressing <kbd>Space</kbd>) with cursor physics tilt, card shuffle, procedural Web Audio sound, flip reveal, and celebration confetti.
+- **Single 3D Tactile Card :** Instant random draw across all 1,000 subjects with cursor physics tilt, 3s continuous lottery flip animation, procedural Web Audio sound, flip reveal, and celebration confetti.
 - **Physical Deck Tracking :** "Exclude previously drawn topics" toggle with real-time remaining counter (`X/1000 remaining`) and one-click deck reset.
 - **Rigorous Methodological Guidance :** Precise angle reminders on each card back (e.g. scientific rigor for psychology, distinguishing evidence/interpretation/faith for religions).
 
@@ -39,19 +39,6 @@
 - **Zero Emojis :** Clean, minimalist 24x24 SVG vector icon system (*Linear / Apple / Vercel style*).
 - **Ultramarine Blue & Bright Gray Palette :** Signature Ultramarine blue (`#3670FF`) primary palette paired with Bright Gray (`#EFEFEF`) typography and crisp high-contrast surfaces.
 - **Web Audio API Synthesizer :** Procedural sounds without external audio assets.
-
----
-
-## ⌨️ Keyboard Shortcuts
-
-| Shortcut | Action |
-| --- | --- |
-| <kbd>Space</kbd> or <kbd>Enter</kbd> | Draw a subject / Next card |
-| <kbd>T</kbd> | Open Timers (10m / 1m) |
-| <kbd>F</kbd> | Toggle Favorite |
-| <kbd>M</kbd> | Mute / Unmute Sounds |
-| <kbd>?</kbd> | View Shortcuts Guide |
-| <kbd>Esc</kbd> | Close Modal |
 
 ---
 

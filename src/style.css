@@ -1920,24 +1920,6 @@ textarea {
   cursor: pointer;
 }
 
-.shortcuts-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.shortcuts-table tr {
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.shortcuts-table td {
-  padding: 0.65rem 0;
-  font-size: 0.88rem;
-}
-
-.shortcuts-table td:last-child {
-  text-align: right;
-}
-
 kbd {
   font-family: monospace;
   background: var(--bg-surface-elevated);

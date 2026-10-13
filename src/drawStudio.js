@@ -59,10 +59,6 @@ export class DrawStudio {
               </div>
               <h2 id="deckFrontTitle">${i18n.t('deckCoverTitle')}</h2>
               <p id="deckFrontDesc">${i18n.t('deckCoverDesc')}</p>
-              <div class="card-front-hint">
-                <span id="deckFrontHint">${i18n.t('deckCoverHint')}</span>
-                <kbd>Espace</kbd>
-              </div>
             </div>
 
             <!-- Card Back (Revealed Topic) -->
@@ -82,7 +78,7 @@ export class DrawStudio {
 
               <div class="card-back-footer">
                 <div class="card-back-actions">
-                  <button class="card-btn" id="cardFavBtn" title="Favori (F)">
+                  <button class="card-btn" id="cardFavBtn" title="Favori">
                     <span class="fav-icon-slot">${icons.heartOutline}</span> <span id="favBtnLabel">${i18n.t('btnFavorite')}</span>
                   </button>
                   <button class="card-btn" id="cardThemeBtn" title="${i18n.t('themeFilterTitle')}">
@@ -133,7 +129,6 @@ export class DrawStudio {
   updateTexts() {
     const frontTitle = this.container.querySelector('#deckFrontTitle');
     const frontDesc = this.container.querySelector('#deckFrontDesc');
-    const frontHint = this.container.querySelector('#deckFrontHint');
     const drawLabel = this.container.querySelector('#primaryDrawBtnLabel');
     const excludeLabel = this.container.querySelector('#excludeDrawnLabel');
     const resetLink = this.container.querySelector('#resetPoolLink');
@@ -143,7 +138,6 @@ export class DrawStudio {
 
     if (frontTitle) frontTitle.textContent = i18n.t('deckCoverTitle');
     if (frontDesc) frontDesc.textContent = i18n.t('deckCoverDesc');
-    if (frontHint) frontHint.textContent = i18n.t('deckCoverHint');
     if (drawLabel) drawLabel.textContent = i18n.t('btnDraw');
     if (excludeLabel) excludeLabel.textContent = i18n.t('optExcludeDrawn');
     if (resetLink) resetLink.textContent = i18n.t('btnResetDeck');
