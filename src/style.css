@@ -459,6 +459,13 @@ textarea {
   cursor: pointer;
 }
 
+.interactive-3d-card.is-shuffling {
+  transition: none !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.14), 0 0 50px rgba(54, 112, 255, 0.45) !important;
+  cursor: wait !important;
+  pointer-events: none;
+}
+
 .interactive-3d-card.flipped {
   transform: rotateY(180deg);
 }
@@ -780,6 +787,28 @@ textarea {
 
 .big-draw-button:active {
   transform: scale(0.97);
+}
+
+.big-draw-button.drawing-active {
+  opacity: 0.95;
+  cursor: wait !important;
+  pointer-events: none;
+  animation: pulseDrawBtn 1.2s ease-in-out infinite alternate;
+}
+
+.big-draw-button.drawing-active .draw-btn-icon {
+  display: inline-block;
+  animation: spinDrawIcon 0.75s linear infinite;
+}
+
+@keyframes spinDrawIcon {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulseDrawBtn {
+  0% { box-shadow: 0 8px 30px rgba(54, 112, 255, 0.4); transform: scale(1); }
+  100% { box-shadow: 0 12px 45px rgba(54, 112, 255, 0.7); transform: scale(1.02); }
 }
 
 .draw-btn-kbd {

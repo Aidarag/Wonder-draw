@@ -241,6 +241,19 @@ export class DrawStudio {
         this.onEnterStudio(this.currentTopic, targetPhase);
       }
     });
+
+    // Click directly on the 3D card to trigger draw
+    const card = this.container.querySelector('#main3dCard');
+    if (card) {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.card-btn') || e.target.closest('.primary-enter-studio-btn') || e.target.closest('a')) {
+          return;
+        }
+        if (!this.isDrawing) {
+          this.handleDraw();
+        }
+      });
+    }
   }
 
   updateStudioButtonState() {
@@ -377,51 +390,132 @@ export class DrawStudio {
       return;
     }
 
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    const pickedTopic = pool[randomIndex];
+
     this.isDrawing = true;
     sound.playShuffle();
 
-    const card = this.container.querySelector('#main3dCard');
-    card.classList.remove('flipped');
-    card.style.transform = 'scale(0.95) rotateY(0deg)';
-
-    let ticks = 0;
-    const interval = setInterval(() => {
-      sound.playTick();
-      ticks++;
-      if (ticks > 5) {
-        clearInterval(interval);
-        const randomIndex = Math.floor(Math.random() * pool.length);
-        const picked = pool[randomIndex];
-        this.displaySingleTopic(picked, true);
-        this.isDrawing = false;
-      }
-    }, 60);
-  }
-
-  displaySingleTopic(topic, isNewDraw = true) {
-    this.currentTopic = topic;
-    if (isNewDraw) {
-      appState.markDrawn(topic);
+    const drawBtn = this.container.querySelector('#primaryDrawBtn');
+    const drawLabel = this.container.querySelector('#primaryDrawBtnLabel');
+    if (drawBtn) {
+      drawBtn.classList.add('drawing-active');
+      drawBtn.disabled = true;
+    }
+    if (drawLabel) {
+      drawLabel.textContent = i18n.t('btnDrawing') || 'Tirage en cours...';
     }
 
     const card = this.container.querySelector('#main3dCard');
+    if (!card) return;
+
+    if (this.drawAnimId) {
+      cancelAnimationFrame(this.drawAnimId);
+      this.drawAnimId = null;
+    }
+
+    const isInitiallyFlipped = card.classList.contains('flipped');
+    const startAngle = isInitiallyFlipped ? 180 : 0;
+    // 5 full 360° revolutions + land on 180° back face (total 1980°)
+    const targetAngle = 1980;
+
+    card.classList.add('is-shuffling');
+
+    const DURATION = 3000; // 3 seconds flipping animation as requested
+    const startTime = performance.now();
+    let lastTickTime = 0;
+    let lastShuffleTime = 0;
+
+    const easeLotterySpin = (p) => {
+      if (p <= 0) return 0;
+      if (p >= 1) return 1;
+      if (p < 0.15) {
+        return (p / 0.15) * (p / 0.15) * 0.15;
+      }
+      const t = (p - 0.15) / 0.85;
+      const decel = 1 - Math.pow(1 - t, 2.7);
+      return 0.15 + 0.85 * decel;
+    };
+
+    const step = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / DURATION, 1);
+      const eased = easeLotterySpin(progress);
+      const currentAngle = startAngle + (targetAngle - startAngle) * eased;
+
+      const lift = Math.sin(progress * Math.PI) * -24;
+      const scale = 1 + Math.sin(progress * Math.PI) * 0.05;
+
+      card.style.transform = `translateY(${lift}px) scale(${scale}) rotateY(${currentAngle}deg)`;
+
+      // Dynamic procedural ticks that decelerate as spin slows down
+      const tickDelay = progress < 0.6 ? 75 : 75 + Math.pow((progress - 0.6) / 0.4, 2) * 220;
+      if (now - lastTickTime >= tickDelay) {
+        sound.playTick();
+        lastTickTime = now;
+
+        if (progress < 0.85) {
+          const previewTopic = pool[Math.floor(Math.random() * pool.length)];
+          this.populateTopicPreview(previewTopic);
+        }
+      }
+
+      if (progress > 0.4 && now - lastShuffleTime > 1200) {
+        sound.playShuffle();
+        lastShuffleTime = now;
+      }
+
+      if (progress >= 0.85 && this.currentTopic !== pickedTopic) {
+        this.populateTopicData(pickedTopic);
+      }
+
+      if (progress < 1) {
+        this.drawAnimId = requestAnimationFrame(step);
+      } else {
+        this.drawAnimId = null;
+        card.classList.remove('is-shuffling');
+        card.style.transform = '';
+        card.classList.add('flipped');
+
+        this.populateTopicData(pickedTopic);
+        appState.markDrawn(pickedTopic);
+
+        sound.playFlip();
+        sound.playReveal();
+
+        fireConfetti({
+          colors: [pickedTopic.colors.primary, pickedTopic.colors.secondary, '#3670FF', '#EFEFEF', '#FFFFFF']
+        });
+
+        if (drawBtn) {
+          drawBtn.classList.remove('drawing-active');
+          drawBtn.disabled = false;
+        }
+        if (drawLabel) {
+          drawLabel.textContent = i18n.t('btnDraw');
+        }
+
+        this.updatePoolCounter();
+        this.isDrawing = false;
+      }
+    };
+
+    this.drawAnimId = requestAnimationFrame(step);
+  }
+
+  populateTopicPreview(topic) {
     const badge = this.container.querySelector('#cardCategoryBadge');
     const topicId = this.container.querySelector('#cardTopicId');
     const title = this.container.querySelector('#cardTopicTitle');
-    const guidanceText = this.container.querySelector('#cardGuidanceText');
-    const searchLink = this.container.querySelector('#cardSearchLink');
     const cardBackFace = this.container.querySelector('#cardBackFace');
 
-    // Localized category name & guidance
-    const localizedCategory = i18n.getCategoryName(topic.categoryId);
-    const localizedGuidance = i18n.getGuidance(topic.categoryId) || topic.guidance;
+    if (!badge || !title) return;
 
-    badge.textContent = localizedCategory;
+    badge.textContent = i18n.getCategoryName(topic.categoryId);
     badge.style.background = topic.colors.gradient;
     topicId.textContent = `#${topic.id} (${topic.topicNumber}/100)`;
     title.textContent = topic.title;
 
-    // Apply length-based responsive sizing class for Anton uppercase title
     title.classList.remove('title-medium', 'title-long', 'title-xlarge');
     if (topic.title.length > 40) {
       title.classList.add('title-long');
@@ -431,28 +525,62 @@ export class DrawStudio {
       title.classList.add('title-xlarge');
     }
 
-    guidanceText.textContent = localizedGuidance;
-    searchLink.href = `https://www.google.com/search?q=${encodeURIComponent(topic.title)}`;
+    if (cardBackFace) {
+      cardBackFace.style.borderColor = topic.colors.primary;
+    }
+  }
 
-    cardBackFace.style.borderColor = topic.colors.primary;
-    cardBackFace.style.boxShadow = `0 0 40px ${topic.colors.primary}33, var(--shadow-lg)`;
+  populateTopicData(topic) {
+    this.currentTopic = topic;
+
+    const badge = this.container.querySelector('#cardCategoryBadge');
+    const topicId = this.container.querySelector('#cardTopicId');
+    const title = this.container.querySelector('#cardTopicTitle');
+    const guidanceText = this.container.querySelector('#cardGuidanceText');
+    const searchLink = this.container.querySelector('#cardSearchLink');
+    const cardBackFace = this.container.querySelector('#cardBackFace');
+
+    if (!badge || !title) return;
+
+    const localizedCategory = i18n.getCategoryName(topic.categoryId);
+    const localizedGuidance = i18n.getGuidance(topic.categoryId) || topic.guidance;
+
+    badge.textContent = localizedCategory;
+    badge.style.background = topic.colors.gradient;
+    topicId.textContent = `#${topic.id} (${topic.topicNumber}/100)`;
+    title.textContent = topic.title;
+
+    title.classList.remove('title-medium', 'title-long', 'title-xlarge');
+    if (topic.title.length > 40) {
+      title.classList.add('title-long');
+    } else if (topic.title.length > 22) {
+      title.classList.add('title-medium');
+    } else {
+      title.classList.add('title-xlarge');
+    }
+
+    if (guidanceText) guidanceText.textContent = localizedGuidance;
+    if (searchLink) searchLink.href = `https://www.google.com/search?q=${encodeURIComponent(topic.title)}`;
+
+    if (cardBackFace) {
+      cardBackFace.style.borderColor = topic.colors.primary;
+      cardBackFace.style.boxShadow = `0 0 40px ${topic.colors.primary}33, var(--shadow-lg)`;
+    }
 
     this.updateFavButtonState(appState.isFavorite(topic.id));
     this.updateStudioButtonState();
+  }
 
-    setTimeout(() => {
-      sound.playFlip();
+  displaySingleTopic(topic, isNewDraw = false) {
+    const card = this.container.querySelector('#main3dCard');
+    this.populateTopicData(topic);
+    if (card) {
       card.classList.add('flipped');
-      if (isNewDraw) {
-        setTimeout(() => {
-          sound.playReveal();
-          fireConfetti({
-            colors: [topic.colors.primary, topic.colors.secondary, '#FFFFFF']
-          });
-        }, 300);
-      }
-    }, 100);
-
+      card.style.transform = '';
+    }
+    if (isNewDraw) {
+      appState.markDrawn(topic);
+    }
     this.updatePoolCounter();
   }
 
@@ -476,7 +604,7 @@ export class DrawStudio {
     if (!card || !stage) return;
 
     stage.addEventListener('mousemove', (e) => {
-      if (card.classList.contains('flipped')) return;
+      if (this.isDrawing || card.classList.contains('flipped')) return;
       const rect = stage.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
@@ -490,11 +618,8 @@ export class DrawStudio {
     });
 
     stage.addEventListener('mouseleave', () => {
-      if (!card.classList.contains('flipped')) {
-        card.style.transform = 'rotateX(0deg) rotateY(0deg) scale(1)';
-      } else {
-        card.style.transform = 'rotateY(180deg)';
-      }
+      if (this.isDrawing) return;
+      card.style.transform = '';
     });
   }
 }
