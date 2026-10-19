@@ -2,6 +2,7 @@ import { TOPICS_DATA } from '../data/topics.js';
 import { appState } from './state.js';
 import { sound } from './audio.js';
 import { icons } from './icons.js';
+import { i18n } from './i18n.js';
 
 export class CollectionExplorer {
   constructor(container, onSelectTopic) {
@@ -15,6 +16,10 @@ export class CollectionExplorer {
 
     this.render();
     this.bindEvents();
+
+    this.unsubscribeLang = i18n.subscribe(() => {
+      this.updateGrid();
+    });
   }
 
   render() {
@@ -106,10 +111,13 @@ export class CollectionExplorer {
 
       // Search query
       if (this.searchQuery) {
-        const titleMatch = topic.title.toLowerCase().includes(this.searchQuery);
-        const catMatch = topic.categoryName.toLowerCase().includes(this.searchQuery);
-        const idMatch = topic.id.toString() === this.searchQuery;
-        if (!titleMatch && !catMatch && !idMatch) {
+        const q = this.searchQuery.toLowerCase();
+        const titleMatch = topic.title.toLowerCase().includes(q);
+        const catMatch = topic.categoryName.toLowerCase().includes(q);
+        const idMatch = topic.id.toString() === q;
+        const descMatch = (topic.description && topic.description.toLowerCase().includes(q)) ||
+                          (topic.description_fr && topic.description_fr.toLowerCase().includes(q));
+        if (!titleMatch && !catMatch && !idMatch && !descMatch) {
           return false;
         }
       }
@@ -143,17 +151,20 @@ export class CollectionExplorer {
         const isFav = appState.isFavorite(topic.id);
         const isDrawn = appState.isDrawn(topic.id);
         const isDone = appState.isCompleted(topic.id);
+        const localizedCat = i18n.getCategoryName(topic.categoryId);
+        const desc = i18n.getTopicDescription(topic);
 
         return `
           <div class="collection-topic-card" data-topic-id="${topic.id}">
             <div class="collection-card-top">
               <span class="collection-cat-tag" style="background:${topic.colors.gradient};">
-                ${topic.categoryName}
+                ${localizedCat}
               </span>
               <span class="collection-id-num">#${topic.id}</span>
             </div>
 
             <h3 class="collection-topic-title">${topic.title}</h3>
+            ${desc ? `<p class="collection-topic-desc">${desc}</p>` : ''}
 
             <div class="collection-card-bottom">
               <div class="card-status-badges">

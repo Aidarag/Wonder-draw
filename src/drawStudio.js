@@ -72,7 +72,7 @@ export class DrawStudio {
                 <h2 class="topic-reveal-title" id="cardTopicTitle">Titre du Sujet</h2>
                 <div class="topic-guidance-callout" id="cardGuidanceBox">
                   <span class="guidance-icon">${icons.info}</span>
-                  <span id="cardGuidanceText">Conseil de cadrage pour votre vidéo 1 minute</span>
+                  <span id="cardGuidanceText">${i18n.t('topicPlaceholderDesc')}</span>
                 </div>
               </div>
 
@@ -153,6 +153,10 @@ export class DrawStudio {
 
     this.updateStudioButtonState();
     this.updatePoolCounter();
+
+    if (this.currentTopic) {
+      this.populateTopicData(this.currentTopic);
+    }
   }
 
   bindEvents() {
@@ -536,7 +540,7 @@ export class DrawStudio {
     if (!badge || !title) return;
 
     const localizedCategory = i18n.getCategoryName(topic.categoryId);
-    const localizedGuidance = i18n.getGuidance(topic.categoryId) || topic.guidance;
+    const localizedGuidance = i18n.getTopicDescription(topic);
 
     badge.textContent = localizedCategory;
     badge.style.background = topic.colors.gradient;

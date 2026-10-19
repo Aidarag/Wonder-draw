@@ -32,7 +32,8 @@ export const translations = {
     alertPoolEmpty: "Toutes les cartes ont été tirées ! Cliquez sur \"Réinitialiser la pioche\" pour recommencer.",
 
     // Studio (10m Research & 60s Video)
-    guidanceBoxTitle: "Conseil méthodologique",
+    guidanceBoxTitle: "À découvrir",
+    topicPlaceholderDesc: "Découvrez l'essentiel de ce sujet en un clin d'œil",
     pitchOutlineTitle: "Cadrage & Notes de Recherche",
     pitchOutlineSub: "Préparation en 10 minutes",
     researchResourcesTitle: "Ressources de recherche en 1 clic",
@@ -106,16 +107,16 @@ export const translations = {
 
     // Category guidances in French
     guidances: {
-      'psychology-and-human-behavior': "Distinguer les résultats scientifiquement validés des croyances populaires. Mettre en avant une étude ou expérience concrète.",
-      'data-and-analytics': "Ancrer votre explication dans un jeu de données réel, un indicateur concret ou un piège classique (ex: paradoxe de Simpson).",
-      'artificial-intelligence': "Distinguer les capacités algorithmiques réelles des fantasmes de science-fiction et du battage médiatique.",
-      'space-and-the-universe': "Mettre l'accent sur les échelles, les principes physiques et la méthode de détection du phénomène.",
-      'religions': "Distinguer les faits historiques, l'interprétation théologique et la croyance personnelle. Rester nuancé et objectif.",
-      'technology': "Expliquer le mécanisme d'ingénierie sous-jacent, pourquoi les solutions antérieures étaient insuffisantes et les perspectives.",
-      'finance': "Illustrer le compromis risque/rendement, les flux de capitaux ou la structure d'incitation du marché.",
-      'business-and-entrepreneurship': "Cibler l'économie unitaire, les barrières à l'entrée (moats) ou une étude de cas emblématique.",
-      'spirituality-and-philosophy': "Distinguer l'argument rationnel, l'introspection et les dogmes. Relier à un questionnement éthique ou existentiel.",
-      'society-culture-and-identity': "Examiner les structures sociales, le contexte historique et la diversité des vécus sans simplification excessive."
+      'psychology-and-human-behavior': "Pourquoi ressentons-nous et réagissons-nous ainsi ? 🧠 Plongez dans les mystères, les réflexes et les secrets de l'esprit humain.",
+      'data-and-analytics': "Comment les chiffres racontent-ils l'histoire du monde ? 📊 Explorez les graphiques et les indices qui transforment les données en révélations.",
+      'artificial-intelligence': "Les lignes de code peuvent-elles vraiment apprendre et créer ? 🤖 Explorez la frontière passionnante où les machines s'éveillent.",
+      'space-and-the-universe': "Qu'y a-t-il au-delà de notre petite planète bleue ? 🚀 Voyagez à travers les étoiles, les trous noirs et les merveilles du cosmos.",
+      'religions': "Comment les récits sacrés et les rituels ont-ils guidé l'humanité à travers les âges ? 🕊️ Découvrez les sagesses et fois du monde.",
+      'technology': "Comment un simple écran de verre dialogue-t-il à travers les océans ? ⚡ Découvrez les inventions géniales qui réinventent notre quotidien.",
+      'finance': "Comment l'argent circule-t-il et fait-il tourner le monde ? 💰 Découvrez les secrets de l'épargne, de l'investissement et de la liberté.",
+      'business-and-entrepreneurship': "Comment une simple idée devient-elle une entreprise qui change la vie de milliers de gens ? 🚀 Découvrez l'aventure entrepreneuriale.",
+      'spirituality-and-philosophy': "Que signifie mener une vie pleine de sens et de paix ? 🌟 Explorez les grandes questions existentielles et la quête de sagesse.",
+      'society-culture-and-identity': "Qu'est-ce qui rend chacun unique et nous rassemble tous ? 🌍 Explorez les identités, les traditions, les fêtes et le vivre-ensemble."
     }
   },
 
@@ -150,7 +151,8 @@ export const translations = {
     alertPoolEmpty: "All cards in this deck have been drawn! Click 'Reset deck' to shuffle again.",
 
     // Studio (10m Research & 60s Video)
-    guidanceBoxTitle: "Methodological Guidance",
+    guidanceBoxTitle: "At a Glance",
+    topicPlaceholderDesc: "Discover the core of this topic at a glance",
     pitchOutlineTitle: "Pitch Framework & Research Notes",
     pitchOutlineSub: "10-minute preparation",
     researchResourcesTitle: "1-Click Research Shortcuts",
@@ -224,16 +226,16 @@ export const translations = {
 
     // Category guidances in English
     guidances: {
-      'psychology-and-human-behavior': "Distinguish supported scientific findings from popular claims. Highlight one study or experiment.",
-      'data-and-analytics': "Anchor your explanation in a concrete real-world dataset, metric, or common analytical pitfall (e.g. Simpson's paradox).",
-      'artificial-intelligence': "Distinguish current algorithmic capability and practical application from speculative science fiction and marketing hype.",
-      'space-and-the-universe': "Focus on scale, physical principles, and how humanity detected or verified this astronomical phenomenon.",
-      'religions': "Distinguish historical evidence, theological interpretation, and spiritual belief. Remain objective and nuanced.",
-      'technology': "Explain the underlying protocol or engineering mechanism, why previous solutions were insufficient, and future trajectory.",
-      'finance': "Illustrate the risk vs. reward tradeoff, capital flow, or the market incentive structure in action.",
-      'business-and-entrepreneurship': "Focus on unit economics, competitive moats, customer psychology, or an iconic business case study.",
-      'spirituality-and-philosophy': "Distinguish rational argument, experiential introspection, and dogmatic assertion. Ground in an ethical or existential question.",
-      'society-culture-and-identity': "Examine social structures, historical context, systemic dynamics, and diverse lived experiences without oversimplifying."
+      'psychology-and-human-behavior': "Why do we feel, react, and connect the way we do? 🧠 Dive into the fascinating quirks, habits, and secrets of the human mind.",
+      'data-and-analytics': "How do hidden numbers tell the stories of our world? 📊 Explore the charts, trends, and clues that turn raw data into wisdom.",
+      'artificial-intelligence': "Can silicon and code truly learn, dream, and create? 🤖 Step into the thrilling frontier where machines begin to think alongside us.",
+      'space-and-the-universe': "What lies beyond the blue rim of our planet? 🚀 Journey across exploding stars, dark abysses, and cosmic wonders of the night sky.",
+      'religions': "How have sacred stories, rituals, and music guided human hearts for millennia? 🕊️ Explore the beauty and faiths of world cultures.",
+      'technology': "How do pocket-sized glass slabs talk across oceans in milliseconds? ⚡ Peek under the hood of the inventions reshaping daily life.",
+      'finance': "How does money move, multiply, and shape civilization? 💰 Master compound growth, smart investing, and freedom without stress.",
+      'business-and-entrepreneurship': "How does a tiny spark of an idea turn into a thriving business? 🚀 Explore the playbooks, bold moves, and grit behind great startups.",
+      'spirituality-and-philosophy': "What does it mean to live a good, meaningful life? 🌟 Ponder the big questions, timeless wisdom, and peace within yourself.",
+      'society-culture-and-identity': "What makes each of us unique, and what binds us together across continents? 🌍 Explore identity, belonging, food, and culture."
     }
   }
 };
@@ -282,9 +284,21 @@ class I18nManager {
     return (dict.categories && dict.categories[catId]) || catId;
   }
 
-  getGuidance(catId) {
+  getTopicDescription(topic) {
+    if (!topic) return '';
+    const lang = this.currentLang || 'fr';
+    if (lang === 'fr') {
+      return topic.description_fr || (topic.description && topic.description.fr) || topic.guidance_fr || topic.description || topic.guidance || this.getGuidance(topic.categoryId);
+    }
+    return (topic.description && typeof topic.description === 'object' ? topic.description.en : topic.description) || topic.guidance || topic.description_en || this.getGuidance(topic.categoryId);
+  }
+
+  getGuidance(catIdOrTopic, topicId) {
+    if (typeof catIdOrTopic === 'object' && catIdOrTopic !== null) {
+      return this.getTopicDescription(catIdOrTopic);
+    }
     const dict = translations[this.currentLang] || translations.fr;
-    return (dict.guidances && dict.guidances[catId]) || '';
+    return (dict.guidances && dict.guidances[catIdOrTopic]) || '';
   }
 
   subscribe(callback) {

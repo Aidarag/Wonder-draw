@@ -413,7 +413,7 @@ export class ChallengeStudio {
     const card = this.container.querySelector('#studioTopicCard');
 
     const localizedCategory = i18n.getCategoryName(this.topic.categoryId);
-    const localizedGuidance = i18n.getGuidance(this.topic.categoryId) || this.topic.guidance;
+    const localizedGuidance = i18n.getTopicDescription(this.topic);
 
     catBadge.textContent = localizedCategory;
     catBadge.style.background = this.topic.colors.gradient;
